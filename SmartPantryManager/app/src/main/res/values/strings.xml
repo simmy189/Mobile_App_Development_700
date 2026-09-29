@@ -26,6 +26,7 @@
     <string name="error_quantity_empty">Quantity cannot be empty</string>
     <string name="error_quantity_positive">Quantity must be greater than zero</string>
     <string name="error_quantity_invalid">Please enter a valid number</string>
+    <string name="error_date_invalid">Enter a valid date as yyyy-MM-dd (e.g. 2026-10-15)</string>
 
     <!-- Delete Confirmation -->
     <string name="delete_ingredient_title">Delete Ingredient</string>

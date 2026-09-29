@@ -12,6 +12,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.smartpantry.manager.R;
 import com.smartpantry.manager.database.AppDatabase;
 import com.smartpantry.manager.database.entity.Ingredient;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class AddEditIngredientActivity extends AppCompatActivity {
 
@@ -131,6 +134,13 @@ public class AddEditIngredientActivity extends AppCompatActivity {
             }
         }
 
+        if (!TextUtils.isEmpty(expiryDate) && !isValidDate(expiryDate)) {
+            etExpiryDate.setError(getString(R.string.error_date_invalid));
+            valid = false;
+        } else {
+            etExpiryDate.setError(null);
+        }
+
         if (!valid) return;
 
         final double finalQuantity = quantity;
@@ -149,6 +159,19 @@ public class AddEditIngredientActivity extends AppCompatActivity {
                 AppDatabase.getInstance(getApplicationContext()).ingredientDao().insert(newIngredient);
                 runOnUiThread(this::finish);
             }).start();
+        }
+    }
+
+    // Accepts only real calendar dates in yyyy-MM-dd format (rejects e.g. 2026-02-30 or 12/10/2026)
+    private boolean isValidDate(String date) {
+        if (!date.matches("\\d{4}-\\d{2}-\\d{2}")) return false;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        sdf.setLenient(false);
+        try {
+            sdf.parse(date);
+            return true;
+        } catch (ParseException e) {
+            return false;
         }
     }
 
