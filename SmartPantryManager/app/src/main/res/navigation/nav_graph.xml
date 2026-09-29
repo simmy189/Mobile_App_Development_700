@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/pantryFragment">
+
+    <fragment
+        android:id="@+id/pantryFragment"
+        android:name="com.smartpantry.manager.ui.pantry.PantryFragment"
+        android:label="@string/nav_pantry"
+        tools:layout="@layout/fragment_pantry" />
+
+    <fragment
+        android:id="@+id/suggestedRecipesFragment"
+        android:name="com.smartpantry.manager.ui.recipes.SuggestedRecipesFragment"
+        android:label="@string/nav_recipes"
+        tools:layout="@layout/fragment_suggested_recipes" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.smartpantry.manager.ui.settings.SettingsFragment"
+        android:label="@string/nav_settings"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>

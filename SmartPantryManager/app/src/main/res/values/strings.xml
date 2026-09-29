@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Smart Pantry Manager</string>
+
+    <!-- Bottom Navigation Labels -->
+    <string name="nav_pantry">Pantry</string>
+    <string name="nav_recipes">Recipes</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Pantry Screen -->
+    <string name="pantry_title">My Pantry</string>
+    <string name="add_ingredient">Add Ingredient</string>
+    <string name="edit_ingredient">Edit Ingredient</string>
+    <string name="no_expiry">No expiry date</string>
+    <string name="expires_label">Expires: %1$s</string>
+
+    <!-- Add/Edit Ingredient Activity -->
+    <string name="hint_ingredient_name">Ingredient Name</string>
+    <string name="hint_quantity">Quantity</string>
+    <string name="hint_expiry_date">Expiry Date (yyyy-MM-dd, optional)</string>
+    <string name="label_unit">Unit</string>
+    <string name="btn_save">Save</string>
+
+    <!-- Validation Errors -->
+    <string name="error_name_empty">Ingredient name cannot be empty</string>
+    <string name="error_quantity_empty">Quantity cannot be empty</string>
+    <string name="error_quantity_positive">Quantity must be greater than zero</string>
+    <string name="error_quantity_invalid">Please enter a valid number</string>
+
+    <!-- Delete Confirmation -->
+    <string name="delete_ingredient_title">Delete Ingredient</string>
+    <string name="delete_ingredient_message">Are you sure you want to delete \"%1$s\" from your pantry?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Recipes Screen -->
+    <string name="recipes_title">Suggested Recipes</string>
+    <string name="empty_recipes_message">No recipes match your pantry yet — add more ingredients</string>
+
+    <!-- Recipe Detail -->
+    <string name="recipe_detail_title">Recipe Details</string>
+    <string name="ingredients_header">Ingredients:</string>
+    <string name="preparation_header">Preparation:</string>
+
+    <!-- Plurals helper (used in adapter) -->
+    <string name="ingredient_count_single">%1$d ingredient</string>
+    <string name="ingredient_count_plural">%1$d ingredients</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Settings</string>
+    <string name="label_expiry_alerts">Enable Expiry Alerts</string>
+    <string name="label_units_preference">Units Preference</string>
+    <string name="units_metric">Metric</string>
+    <string name="units_imperial">Imperial</string>
+    <string name="version_info">Version %1$s</string>
+    <string name="app_version_label">App Version</string>
+</resources>
