@@ -24,8 +24,12 @@ import java.util.List;
 public class SuggestedRecipesFragment extends Fragment implements RecipesAdapter.OnRecipeClickListener {
 
     private RecipesAdapter adapter;
+    private RecipesAdapter almostThereAdapter;
     private AppDatabase db;
     private TextView tvEmptyState;
+    private TextView tvSuggestedHeader;
+    private TextView tvAlmostThereHeader;
+    private RecyclerView recyclerAlmostThere;
 
     @Nullable
     @Override
@@ -41,19 +45,24 @@ public class SuggestedRecipesFragment extends Fragment implements RecipesAdapter
 
         db = AppDatabase.getInstance(requireContext());
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_recipes);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-
-        adapter = new RecipesAdapter(this);
-        recyclerView.setAdapter(adapter);
-
         tvEmptyState = view.findViewById(R.id.tv_empty_state);
+        tvSuggestedHeader = view.findViewById(R.id.tv_suggested_header);
+        tvAlmostThereHeader = view.findViewById(R.id.tv_almost_there_header);
+        recyclerAlmostThere = view.findViewById(R.id.recycler_almost_there);
+
+        RecyclerView recyclerRecipes = view.findViewById(R.id.recycler_recipes);
+        recyclerRecipes.setLayoutManager(new LinearLayoutManager(requireContext()));
+        adapter = new RecipesAdapter(this);
+        recyclerRecipes.setAdapter(adapter);
+
+        recyclerAlmostThere.setLayoutManager(new LinearLayoutManager(requireContext()));
+        almostThereAdapter = new RecipesAdapter(this);
+        recyclerAlmostThere.setAdapter(almostThereAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        // Refresh matched recipes every time this screen becomes visible
         loadMatchingRecipes();
     }
 
@@ -62,21 +71,32 @@ public class SuggestedRecipesFragment extends Fragment implements RecipesAdapter
             List<Ingredient> pantryIngredients = db.ingredientDao().getAllIngredients();
             List<Recipe> allRecipes = db.recipeDao().getAllRecipes();
             List<RecipeWithIngredients> matchedRecipes = new ArrayList<>();
+            List<RecipeWithIngredients> almostThereRecipes = new ArrayList<>();
 
             for (Recipe recipe : allRecipes) {
                 List<RecipeIngredient> recipeIngredients =
                         db.recipeIngredientDao().getIngredientsForRecipe(recipe.id);
                 if (IngredientMatcher.recipeMatchesPantry(recipeIngredients, pantryIngredients)) {
                     matchedRecipes.add(new RecipeWithIngredients(recipe, recipeIngredients));
+                } else if (IngredientMatcher.countMissing(recipeIngredients, pantryIngredients) == 1) {
+                    almostThereRecipes.add(new RecipeWithIngredients(recipe, recipeIngredients));
                 }
             }
 
             requireActivity().runOnUiThread(() -> {
                 adapter.setRecipes(matchedRecipes);
-                if (matchedRecipes.isEmpty()) {
+                almostThereAdapter.setRecipes(almostThereRecipes);
+
+                if (matchedRecipes.isEmpty() && almostThereRecipes.isEmpty()) {
                     tvEmptyState.setVisibility(View.VISIBLE);
+                    tvSuggestedHeader.setVisibility(View.GONE);
+                    tvAlmostThereHeader.setVisibility(View.GONE);
+                    recyclerAlmostThere.setVisibility(View.GONE);
                 } else {
                     tvEmptyState.setVisibility(View.GONE);
+                    tvSuggestedHeader.setVisibility(matchedRecipes.isEmpty() ? View.GONE : View.VISIBLE);
+                    tvAlmostThereHeader.setVisibility(almostThereRecipes.isEmpty() ? View.GONE : View.VISIBLE);
+                    recyclerAlmostThere.setVisibility(almostThereRecipes.isEmpty() ? View.GONE : View.VISIBLE);
                 }
             });
         }).start();

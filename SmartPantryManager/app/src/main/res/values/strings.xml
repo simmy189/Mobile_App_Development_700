@@ -36,6 +36,8 @@
     <!-- Recipes Screen -->
     <string name="recipes_title">Suggested Recipes</string>
     <string name="empty_recipes_message">No recipes match your pantry yet — add more ingredients</string>
+    <string name="header_suggested">Recipes You Can Make Now</string>
+    <string name="header_almost_there">Almost There (Missing 1 Ingredient)</string>
 
     <!-- Recipe Detail -->
     <string name="recipe_detail_title">Recipe Details</string>
