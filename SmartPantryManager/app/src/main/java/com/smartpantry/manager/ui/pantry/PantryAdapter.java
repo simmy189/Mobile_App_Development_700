@@ -1,5 +1,6 @@
 package com.smartpantry.manager.ui.pantry;
 
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.smartpantry.manager.R;
 import com.smartpantry.manager.database.entity.Ingredient;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.IngredientViewHolder> {
 
@@ -77,23 +83,38 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.Ingredient
             if (!TextUtils.isEmpty(ingredient.expiryDate)) {
                 tvExpiry.setText(itemView.getContext().getString(R.string.expires_label, ingredient.expiryDate));
                 tvExpiry.setVisibility(View.VISIBLE);
+                // Highlight in red if expiring within 7 days
+                if (isExpiringSoon(ingredient.expiryDate)) {
+                    tvExpiry.setTextColor(Color.parseColor("#D32F2F"));
+                } else {
+                    tvExpiry.setTextColor(Color.parseColor("#757575"));
+                }
             } else {
                 tvExpiry.setText(R.string.no_expiry);
+                tvExpiry.setTextColor(Color.parseColor("#757575"));
                 tvExpiry.setVisibility(View.VISIBLE);
             }
 
             itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onIngredientClick(ingredient);
-                }
+                if (listener != null) listener.onIngredientClick(ingredient);
             });
 
             itemView.setOnLongClickListener(v -> {
-                if (listener != null) {
-                    return listener.onIngredientLongClick(ingredient);
-                }
+                if (listener != null) return listener.onIngredientLongClick(ingredient);
                 return false;
             });
+        }
+
+        private boolean isExpiringSoon(String expiryDate) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                Date expiry = sdf.parse(expiryDate);
+                if (expiry == null) return false;
+                long diffMs = expiry.getTime() - new Date().getTime();
+                return diffMs >= 0 && TimeUnit.MILLISECONDS.toDays(diffMs) <= 7;
+            } catch (ParseException e) {
+                return false;
+            }
         }
     }
 }
