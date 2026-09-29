@@ -95,12 +95,12 @@ The Android project lives in the `SmartPantryManager` folder — open/build **th
    ```
    Alternatively set the `ANDROID_HOME` environment variable.
 
-3. **Build the debug APK:**
+3. **Build the debug APK** (run all Gradle commands from inside the `SmartPantryManager` folder):
    ```bash
    ./gradlew assembleDebug        # macOS / Linux
    gradlew.bat assembleDebug      # Windows
    ```
-   The APK is written to `app/build/outputs/apk/debug/app-debug.apk`.
+   The APK is written to `SmartPantryManager/app/build/outputs/apk/debug/app-debug.apk`.
 
 4. **Install on a running emulator / connected device:**
    ```bash
@@ -138,31 +138,34 @@ The 20 recipes are seeded on first launch only. To reset the app data, uninstall
 
 ## Project Structure
 ```
-SmartPantryManager/
-├── build.gradle                 # Root build file (AGP plugin version)
-├── settings.gradle              # Repositories and included modules
-├── gradle.properties            # Gradle/AndroidX flags
-├── gradlew, gradlew.bat         # Gradle wrapper scripts
-├── gradle/wrapper/              # Wrapper jar + Gradle version (8.4)
-└── app/
-    ├── build.gradle             # App module config & dependencies
-    └── src/main/
-        ├── AndroidManifest.xml
-        ├── java/com/smartpantry/manager/
-        │   ├── MainActivity.java            # Hosts bottom navigation, triggers DB seeding
-        │   ├── SmartPantryApp.java          # Application class
-        │   ├── database/
-        │   │   ├── AppDatabase.java         # Room database singleton
-        │   │   ├── DatabaseSeeder.java      # Inserts the 20 recipes on first run
-        │   │   ├── dao/                     # IngredientDao, RecipeDao, RecipeIngredientDao
-        │   │   └── entity/                  # Ingredient, Recipe, RecipeIngredient
-        │   ├── model/RecipeWithIngredients.java
-        │   ├── ui/
-        │   │   ├── pantry/                  # PantryFragment, PantryAdapter, AddEditIngredientActivity
-        │   │   ├── recipes/                 # SuggestedRecipesFragment, RecipesAdapter, RecipeDetailActivity
-        │   │   └── settings/SettingsFragment.java
-        │   └── util/IngredientMatcher.java  # Name normalisation + recipe matching logic
-        └── res/                             # Layouts, navigation graph, menus, strings, themes, icons
+Mobile_App_Development_700/          # Repository root
+├── README.md                        # This file
+├── .gitignore
+└── SmartPantryManager/              # Android project — open this folder in Android Studio
+    ├── build.gradle                 # Root build file (AGP plugin version)
+    ├── settings.gradle              # Repositories and included modules
+    ├── gradle.properties            # Gradle/AndroidX flags
+    ├── gradlew, gradlew.bat         # Gradle wrapper scripts
+    ├── gradle/wrapper/              # Wrapper jar + Gradle version (8.4)
+    └── app/
+        ├── build.gradle             # App module config & dependencies
+        └── src/main/
+            ├── AndroidManifest.xml
+            ├── java/com/smartpantry/manager/
+            │   ├── MainActivity.java            # Hosts bottom navigation, triggers DB seeding
+            │   ├── SmartPantryApp.java          # Application class
+            │   ├── database/
+            │   │   ├── AppDatabase.java         # Room database singleton
+            │   │   ├── DatabaseSeeder.java      # Inserts the 20 recipes on first run
+            │   │   ├── dao/                     # IngredientDao, RecipeDao, RecipeIngredientDao
+            │   │   └── entity/                  # Ingredient, Recipe, RecipeIngredient
+            │   ├── model/RecipeWithIngredients.java
+            │   ├── ui/
+            │   │   ├── pantry/                  # PantryFragment, PantryAdapter, AddEditIngredientActivity
+            │   │   ├── recipes/                 # SuggestedRecipesFragment, RecipesAdapter, RecipeDetailActivity
+            │   │   └── settings/SettingsFragment.java
+            │   └── util/IngredientMatcher.java  # Name normalisation + recipe matching logic
+            └── res/                             # Layouts, navigation graph, menus, strings, themes, icons
 ```
 
 ## Database
