@@ -1,8 +1,8 @@
 package com.smartpantry.manager.ui.recipes;
 
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -71,7 +71,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
         if (ingredients != null) {
             for (RecipeIngredient ingredient : ingredients) {
                 TextView tvIngredient = new TextView(this);
-                tvIngredient.setTextAppearance(R.style.IngredientListItem);
+                tvIngredient.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                tvIngredient.setTextColor(getResources().getColor(R.color.colorOnSurface, getTheme()));
 
                 String quantityStr;
                 if (ingredient.requiredQuantity == Math.floor(ingredient.requiredQuantity)) {
