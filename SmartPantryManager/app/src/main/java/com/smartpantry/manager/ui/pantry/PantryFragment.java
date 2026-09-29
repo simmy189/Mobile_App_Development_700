@@ -1,6 +1,8 @@
 package com.smartpantry.manager.ui.pantry;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.smartpantry.manager.R;
 import com.smartpantry.manager.database.AppDatabase;
 import com.smartpantry.manager.database.entity.Ingredient;
+import com.smartpantry.manager.ui.settings.SettingsFragment;
 
 public class PantryFragment extends Fragment implements PantryAdapter.OnIngredientClickListener {
 
@@ -48,6 +51,15 @@ public class PantryFragment extends Fragment implements PantryAdapter.OnIngredie
 
         FloatingActionButton fab = view.findViewById(R.id.fab_add_ingredient);
         fab.setOnClickListener(v -> openAddIngredientActivity());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Re-read each time so a change made on the Settings tab applies immediately
+        SharedPreferences prefs = requireContext().getSharedPreferences(
+                SettingsFragment.PREFS_NAME, Context.MODE_PRIVATE);
+        adapter.setExpiryAlertsEnabled(prefs.getBoolean(SettingsFragment.KEY_EXPIRY_ALERTS, true));
     }
 
     private void openAddIngredientActivity() {

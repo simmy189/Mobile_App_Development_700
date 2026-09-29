@@ -27,6 +27,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.Ingredient
 
     private List<Ingredient> ingredients = new ArrayList<>();
     private OnIngredientClickListener listener;
+    private boolean expiryAlertsEnabled = true;
 
     public PantryAdapter(OnIngredientClickListener listener) {
         this.listener = listener;
@@ -34,6 +35,12 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.Ingredient
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients != null ? ingredients : new ArrayList<>();
+        notifyDataSetChanged();
+    }
+
+    public void setExpiryAlertsEnabled(boolean enabled) {
+        if (expiryAlertsEnabled == enabled) return;
+        expiryAlertsEnabled = enabled;
         notifyDataSetChanged();
     }
 
@@ -48,7 +55,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.Ingredient
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         Ingredient ingredient = ingredients.get(position);
-        holder.bind(ingredient, listener);
+        holder.bind(ingredient, listener, expiryAlertsEnabled);
     }
 
     @Override
@@ -68,7 +75,7 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.Ingredient
             tvExpiry = itemView.findViewById(R.id.tv_ingredient_expiry);
         }
 
-        void bind(Ingredient ingredient, OnIngredientClickListener listener) {
+        void bind(Ingredient ingredient, OnIngredientClickListener listener, boolean expiryAlertsEnabled) {
             tvName.setText(ingredient.name);
 
             // Format quantity: show as integer if whole number, decimal otherwise
@@ -83,8 +90,8 @@ public class PantryAdapter extends RecyclerView.Adapter<PantryAdapter.Ingredient
             if (!TextUtils.isEmpty(ingredient.expiryDate)) {
                 tvExpiry.setText(itemView.getContext().getString(R.string.expires_label, ingredient.expiryDate));
                 tvExpiry.setVisibility(View.VISIBLE);
-                // Highlight in red if expiring within 7 days
-                if (isExpiringSoon(ingredient.expiryDate)) {
+                // Highlight in red if expiring within 7 days (unless expiry alerts are turned off in Settings)
+                if (expiryAlertsEnabled && isExpiringSoon(ingredient.expiryDate)) {
                     tvExpiry.setTextColor(Color.parseColor("#D32F2F"));
                 } else {
                     tvExpiry.setTextColor(Color.parseColor("#757575"));
