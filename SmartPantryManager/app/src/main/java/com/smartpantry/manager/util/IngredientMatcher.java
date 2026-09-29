@@ -8,20 +8,26 @@ import java.util.Map;
 
 public class IngredientMatcher {
 
+    // Collapse whitespace and apply plural→singular rules so "Tomatoes" == "tomato"
     public static String normalize(String name) {
         if (name == null) return "";
-        String n = name.trim().toLowerCase();
-        // Handle plural forms
-        if (n.endsWith("ies") && n.length() > 3) {
-            n = n.substring(0, n.length() - 3) + "y"; // berries->berry
-        } else if (n.endsWith("ves") && n.length() > 3) {
-            n = n.substring(0, n.length() - 3) + "f"; // loaves->loaf
-        } else if (n.endsWith("es") && n.length() > 3) {
-            n = n.substring(0, n.length() - 1); // tomatoes->tomato, potatoes->potato
-        } else if (n.endsWith("s") && n.length() > 2 && !n.endsWith("ss")) {
-            n = n.substring(0, n.length() - 1); // eggs->egg, carrots->carrot
+        // Collapse internal whitespace (e.g. "olive  oil" -> "olive oil")
+        String n = name.trim().toLowerCase().replaceAll("\\s+", " ");
+        // Apply plural→singular rules on the last word only for multi-word names
+        int lastSpace = n.lastIndexOf(' ');
+        String prefix = lastSpace >= 0 ? n.substring(0, lastSpace + 1) : "";
+        String word = lastSpace >= 0 ? n.substring(lastSpace + 1) : n;
+
+        if (word.endsWith("ies") && word.length() > 3) {
+            word = word.substring(0, word.length() - 3) + "y"; // berries->berry
+        } else if (word.endsWith("ves") && word.length() > 3) {
+            word = word.substring(0, word.length() - 3) + "f"; // loaves->loaf
+        } else if (word.endsWith("es") && word.length() > 3) {
+            word = word.substring(0, word.length() - 1); // tomatoes->tomato
+        } else if (word.endsWith("s") && word.length() > 2 && !word.endsWith("ss")) {
+            word = word.substring(0, word.length() - 1); // eggs->egg, carrots->carrot
         }
-        return n;
+        return prefix + word;
     }
 
     public static boolean recipeMatchesPantry(List<RecipeIngredient> required, List<Ingredient> pantry) {
