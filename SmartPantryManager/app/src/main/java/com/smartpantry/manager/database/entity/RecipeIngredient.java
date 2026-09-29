@@ -2,6 +2,7 @@ package com.smartpantry.manager.database.entity;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
@@ -23,6 +24,7 @@ public class RecipeIngredient {
 
     public RecipeIngredient() {}
 
+    @Ignore
     public RecipeIngredient(int recipeId, String ingredientName, double requiredQuantity, String unit) {
         this.recipeId = recipeId;
         this.ingredientName = ingredientName;

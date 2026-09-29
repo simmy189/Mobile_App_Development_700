@@ -1,6 +1,7 @@
 package com.smartpantry.manager.database.entity;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "recipes")
@@ -12,6 +13,7 @@ public class Recipe {
 
     public Recipe() {}
 
+    @Ignore
     public Recipe(String name, String preparationSteps) {
         this.name = name;
         this.preparationSteps = preparationSteps;
